@@ -1,5 +1,7 @@
 ## Ansible / passbolt POC
 
+![ansible-passbolt-poc-video](ansible-passbolt-poc.gif)
+
 ### Launch the docker-compose stack
 
 ```
