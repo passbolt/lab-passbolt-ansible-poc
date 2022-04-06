@@ -1,7 +1,5 @@
 ## Ansible / passbolt POC
 
-![ansible-passbolt-poc-video](ansible-passbolt-poc.gif)
-
 ### Launch the docker-compose stack
 
 ```
@@ -27,6 +25,8 @@ Or in one command without jump inside the ansible container:
 ```
 docker-compose run ansible bash -c "ansible-playbook playbooks/example-playbook.yml"
 ```
+
+![ansible-passbolt-poc-video](ansible-passbolt-poc.gif)
 
 ### Services provided by this docker stack
 
