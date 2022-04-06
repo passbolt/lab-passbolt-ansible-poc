@@ -1,0 +1,14 @@
+stages:
+  - Ansible POC
+
+Ansible POC:
+  stage: Ansible POC
+  image: registry.gitlab.com/anatomicjc/docker-images/ansible-docker:latest
+  before_script:
+    - sed -i 's!interpreter_python=/usr/bin/python3!interpreter_python=/usr/local/bin/python!g' ansible.cfg
+    - sed -i "s|inventory=inventory|inventory=$(pwd)/inventory|g" ansible.cfg
+    - cat "${VAULT_PASSWORD}" > "${HOME}/.vault_pass_poc"
+    - mv ansible.cfg ~/.ansible.cfg
+    - ansible-galaxy collection install anatomicjc.passbolt
+  script: |
+    ansible-playbook playbooks/passbolt-poc.yml

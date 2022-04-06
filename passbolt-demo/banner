@@ -1,0 +1,24 @@
+Caveats and conditions:
+
+Your Passbolt instance has been populated with testing data.
+This is provided "as-is" and is NOT intended for production use.
+
+-------------------------------------------------------------------------------
+
+Connect to Passbolt and recover one of these email accounts:
+
+ * ada@passbolt.dev
+ * betty@passbolt.dev
+ * admin@passbolt.dev
+
+The email cronjob is executed each minute, so  wait for the recovery account email.
+
+You will find a link to recover your account who will redirect you to a page asking for you OpenPGP private key block.
+
+Here are the OpenPGP key weblinks:
+
+* ada@passbolt.dev: https://raw.githubusercontent.com/anatomicjc/passbolt-test-data/master/config/gpg/ada_private.key
+* betty@passbolt.dev: https://raw.githubusercontent.com/anatomicjc/passbolt-test-data/master/config/gpg/betty_private.key
+* admin@passbolt.dev: https://raw.githubusercontent.com/anatomicjc/passbolt-test-data/master/config/gpg/admin_private.key
+
+You will then prompted for a passphrase, who is the email address of the account you are trying to recover.

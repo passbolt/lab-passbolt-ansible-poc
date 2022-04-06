@@ -1,0 +1,49 @@
+# export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+- hosts: all
+  gather_facts: no
+  environment:
+    PASSBOLT_BASE_URL: "http://passbolt"
+    #PASSBOLT_GPG_LIBRARY: "gnupg"
+    #PASSBOLT_FINGERPRINT: "1321159AE7BEE9EF9C4BBC7ECBAD2FB0C22FE70C"
+    PASSBOLT_PRIVATE_KEY: "{{ ada_private_key_vault }}"
+    PASSBOLT_PASSPHRASE: "{{ ada_passphrase_vault }}"
+  vars:
+    passbolt: 'anatomicjc.passbolt.passbolt'
+    aws:
+      access_key: "{{ lookup(passbolt, 'AWS').password }}"
+      secret_key: "{{ lookup(passbolt, 'AWS').description }}"
+  tasks:
+    - name: "Password from ansible vault"
+      debug:
+        var: ansible_vault_protected
+    - name: "Passbolt lookup plugin / fetch one"
+      debug:
+        var: lookup(passbolt, 'OVH')
+    - name: "Passbolt lookup plugin / loop with filters"
+      debug:
+        var: item
+      loop:
+        - "{{ lookup(passbolt, 'Odoo') }}"
+        - "{{ lookup(passbolt, 'b9dcba41-5880-4a23-8a4c-3ac3564cfa18', per_uuid='true') }}"
+        - "{{ lookup(passbolt, 'OVH', username='john@dog.com') }}"
+        - "{{ lookup(passbolt, 'OVH', username='user@domain.tld') }}"
+    - name: "Display AWS variables"
+      debug:
+        msg: |-
+          Access Key is {{ aws.access_key }} and Secret Key is {{ aws.secret_key }}
+    - name: Create ~/.aws directory if it does not exist
+      ansible.builtin.file:
+        path: ${HOME}/.aws
+        state: directory
+        mode: '0700'
+    - name: Generate AWS credentials profile
+      ansible.builtin.copy:
+        dest: ${HOME}/.aws/credentials
+        mode: "0600"
+        content: |
+          [default]
+          aws_access_key_id={{ aws.access_key }}
+          aws_secret_access_key={{ aws.secret_key }}
+    - name: Display AWS credentials profile path
+      debug:
+        msg: Your AWS profile has been created on ~/.aws/credentials

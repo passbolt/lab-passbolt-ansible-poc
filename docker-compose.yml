@@ -1,0 +1,64 @@
+version: '3.7'
+services:
+  db:
+    container_name: passbolt-demo-db
+    image: mariadb:10.7
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=true
+      - MYSQL_DATABASE=passbolt
+      - MYSQL_USER=passbolt
+      - MYSQL_PASSWORD=P4ssb0lt
+    volumes:
+      - ./passbolt-demo/passbolt-demo.sql.gz:/docker-entrypoint-initdb.d/passbolt-demo.sql.gz
+      - ReasheNu3xukitohEt9oojaeMahgheipheegairieH6quoh2giezie4na7tipiepoo5veimie9oongah:/var/lib/mysql
+  passbolt:
+    container_name: passbolt-demo-passbolt
+    image: anatomicjc/passbolt:latest-ce-multiarch
+    tty: true
+    depends_on:
+      - db
+    environment:
+      - APP_FULL_BASE_URL=http://localhost:12380
+      - DATASOURCES_DEFAULT_HOST=db
+      - DATASOURCES_DEFAULT_USERNAME=passbolt
+      - DATASOURCES_DEFAULT_PASSWORD=P4ssb0lt
+      - DATASOURCES_DEFAULT_DATABASE=passbolt
+      - DATASOURCES_QUOTE_IDENTIFIER=true
+      - PASSBOLT_REGISTRATION_PUBLIC=false
+      - EMAIL_TRANSPORT_DEFAULT_HOST=mail
+      - EMAIL_TRANSPORT_DEFAULT_PORT=1025
+    command:
+      [
+        "/usr/bin/wait-for.sh",
+        "-t",
+        "0",
+        "db:3306",
+        "--",
+        "/docker-entrypoint.sh"
+      ]
+    ports:
+      - 12380:80
+  mail:
+    container_name: passbolt-demo-mail
+    image: anatomicjc/mailhog
+    ports:
+      - 12325:8025
+  banner:
+    container_name: passbolt-demo-banner
+    image: anatomicjc/alpine
+    volumes:
+      - ./passbolt-demo/banner:/banner:ro
+    command: cat /banner
+  ansible:
+    container_name: passbolt-demo-ansible
+    image: anatomicjc/ansible-docker:passbolt
+    command: bash
+    volumes:
+      - ./ansible.cfg:/home/ansible/ansible.cfg:ro
+      - ./inventory:/home/ansible/inventory:ro
+      - ./playbooks:/home/ansible/playbooks:ro
+      - ./pgp-keys:/home/ansible/pgp-keys:ro
+      - ./vault_pass:/home/ansible/vault_pass:ro
+
+volumes:
+  ReasheNu3xukitohEt9oojaeMahgheipheegairieH6quoh2giezie4na7tipiepoo5veimie9oongah:
