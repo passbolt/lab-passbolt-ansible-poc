@@ -7,6 +7,9 @@
     #PASSBOLT_FINGERPRINT: "1321159AE7BEE9EF9C4BBC7ECBAD2FB0C22FE70C"
     PASSBOLT_PRIVATE_KEY: "{{ ada_private_key_vault }}"
     PASSBOLT_PASSPHRASE: "{{ ada_passphrase_vault }}"
+    PASSBOLT_CREATE_NEW_RESOURCE: "true"
+    PASSBOLT_NEW_RESOURCE_PASSWORD_LENGTH: 20
+    PASSBOLT_NEW_RESOURCE_PASSWORD_SPECIAL_CHARS: "true"
   vars:
     passbolt: 'anatomicjc.passbolt.passbolt'
     aws:
@@ -47,3 +50,6 @@
     - name: Display AWS credentials profile path
       debug:
         msg: Your AWS profile has been created on ~/.aws/credentials
+    - name: "This resource doesn't exists and will be created"
+      debug:
+        var: lookup(passbolt, 'Passbolt Cloud', username='admin@passbolt.dev', uri='https://cloud.passbolt.com')
