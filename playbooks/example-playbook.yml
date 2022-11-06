@@ -12,6 +12,8 @@
     PASSBOLT_NEW_RESOURCE_PASSWORD_SPECIAL_CHARS: "true"
   vars:
     passbolt: 'anatomicjc.passbolt.passbolt'
+    passbolt_inventory: 'anatomicjc.passbolt.passbolt_inventory'
+    passbolt_check_naming_regex: 'Passbolt Cloud'
     aws:
       access_key: "{{ lookup(passbolt, 'AWS').password }}"
       secret_key: "{{ lookup(passbolt, 'AWS').description }}"
@@ -53,3 +55,12 @@
     - name: "This resource doesn't exists and will be created"
       debug:
         var: lookup(passbolt, 'Passbolt Cloud', username='admin@passbolt.dev', uri='https://cloud.passbolt.com')
+    - name: Get all resources
+      debug:
+        msg: "{{ lookup(passbolt_inventory) }}"
+    - name: Get all resources and check if the naming matches the naming guideline
+      debug:
+        msg: "{{ lookup(passbolt_inventory) | anatomicjc.passbolt.check_naming(passbolt_check_naming_regex) }}"
+    - name: Get a single resource and check if it matches the naming guideline
+      debug:
+        msg: "{{ lookup(passbolt, 'Passbolt Cloud')  | anatomicjc.passbolt.check_naming(passbolt_check_naming_regex) }}"
