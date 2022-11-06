@@ -15,7 +15,7 @@ MIT No Attribution - https://opensource.org/licenses/MIT-0
 ## Resources
 
 * [Managing Secrets in Ansible using passbolt](https://blog.passbolt.com/managing-secrets-in-ansible-using-passbolt-87af031ceab6)
-* [ansible collection](https://galaxy.ansible.com/anatomicjc/passbolt)
+* [passbolt ansible collection](https://galaxy.ansible.com/anatomicjc/passbolt)
 * [py-passbolt library](https://pypi.org/project/py-passbolt/)
 
 ## Ansible / passbolt POC
