@@ -13,10 +13,12 @@
   vars:
     passbolt: 'anatomicjc.passbolt.passbolt'
     passbolt_inventory: 'anatomicjc.passbolt.passbolt_inventory'
-    passbolt_check_naming_regex: 'Passbolt Cloud'
     aws:
       access_key: "{{ lookup(passbolt, 'AWS').password }}"
       secret_key: "{{ lookup(passbolt, 'AWS').description }}"
+    # To understand python regex syntax: https://docs.python.org/3/howto/regex.html
+    passbolt_check_naming_only_alphanumerics: '^\w*$'
+    passbolt_check_naming_alphanumerics_separated_with_spaces: '^\w*\s*\w*$'
   tasks:
     - name: "Password from ansible vault"
       debug:
@@ -55,12 +57,14 @@
     - name: "This resource doesn't exists and will be created"
       debug:
         var: lookup(passbolt, 'Passbolt Cloud', username='admin@passbolt.dev', uri='https://cloud.passbolt.com')
-    - name: Get all resources
+    - name: Display all resources
       debug:
         msg: "{{ lookup(passbolt_inventory) }}"
-    - name: Get all resources and check if the naming matches the naming guideline
+    - name: Check if resources naming matches the naming guideline (only alphanumerics)
       debug:
-        msg: "{{ lookup(passbolt_inventory) | anatomicjc.passbolt.check_naming(passbolt_check_naming_regex) }}"
-    - name: Get a single resource and check if it matches the naming guideline
+        msg: "{{ item | anatomicjc.passbolt.check_naming(passbolt_check_naming_only_alphanumerics) }}"
+      loop: "{{ lookup(passbolt_inventory) }}"
+      ignore_errors: yes
+    - name: Get a single resource and check if it matches the naming guideline (alphanumeric with spaces)
       debug:
-        msg: "{{ lookup(passbolt, 'Passbolt Cloud')  | anatomicjc.passbolt.check_naming(passbolt_check_naming_regex) }}"
+        msg: "{{ lookup(passbolt, 'Passbolt Cloud')  | anatomicjc.passbolt.check_naming(passbolt_check_naming_alphanumerics_separated_with_spaces) }}"
