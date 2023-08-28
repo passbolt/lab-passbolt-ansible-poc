@@ -5,13 +5,20 @@ This is provided "as-is" and is NOT intended for production use.
 
 -------------------------------------------------------------------------------
 
-Connect to Passbolt and recover one of these email accounts:
+Useful links:
+
+* passbolt UI: http://localhost:12380
+* Webmail: http://localhost:12325
+
+-------------------------------------------------------------------------------
+
+Connect to Passbolt http://localhost:12380 and recover one of these email accounts:
 
  * ada@passbolt.dev
  * betty@passbolt.dev
  * admin@passbolt.dev
 
-The email cronjob is executed each minute, so  wait for the recovery account email.
+Connect to the webmail http://localhost:12325 and wait for the recovery account email.
 
 You will find a link to recover your account who will redirect you to a page asking for you OpenPGP private key block.
 
