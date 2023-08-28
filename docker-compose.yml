@@ -13,7 +13,7 @@ services:
       - ReasheNu3xukitohEt9oojaeMahgheipheegairieH6quoh2giezie4na7tipiepoo5veimie9oongah:/var/lib/mysql
   passbolt:
     container_name: passbolt-demo-passbolt
-    image: anatomicjc/passbolt:latest-ce-multiarch
+    image: passbolt/passbolt:latest
     tty: true
     depends_on:
       - db
