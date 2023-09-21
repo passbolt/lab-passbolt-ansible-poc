@@ -63,7 +63,7 @@
     - name: Check if resources naming matches the naming guideline (only alphanumerics)
       debug:
         msg: "{{ item | anatomicjc.passbolt.check_naming(passbolt_check_naming_only_alphanumerics) }}"
-      loop: "{{ lookup(passbolt_inventory) }}"
+      loop: "{{ lookup(passbolt_inventory) | list }}"
       ignore_errors: yes
     - name: Get a single resource and check if it matches the naming guideline (alphanumeric with spaces)
       debug:
